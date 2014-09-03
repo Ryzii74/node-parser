@@ -9,7 +9,7 @@ module.exports = {
 			function getData (callback) {
 				downloader.get(url, function (err, body) {
 					if (err) {
-						console.log('page load error', err);
+                        callback(err, {});
 						return false;
 					}
 
