@@ -5,11 +5,13 @@ var Page = require('../libs/page.js');
 var config = require('../config.js');
 
 class DefaultGetter {
-    constructor(config) {
+    constructor(config, callback) {
         this.config = config;
         this.currentPosition = 1;
         this.lastPageElementsFound = 0;
         this.elementsParsed = 0;
+
+        callback(null, this);
     }
 
     start(setter) {
@@ -59,6 +61,6 @@ class DefaultGetter {
 }
 
 module.exports = {
-    create : (config) => new DefaultGetter(config),
+    create : (config, callback) => new DefaultGetter(config, callback),
     getter : () => DefaultGetter
 };

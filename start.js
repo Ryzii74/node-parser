@@ -25,12 +25,14 @@ async.map(settersFiles, (file, callback) => {
     }
 
     try {
-        var getter = require(globalConfig.getters.path + (config.getter.type || globalConfig.getters.default)).create(config.getter);
+        require(globalConfig.getters.path + (config.getter.type || globalConfig.getters.default)).create(config.getter, (err, getter) => {
+            if (err) return error('err creating getter');
+
+            getter.start(setter);
+        });
     } catch (e) {
         return error('bad getter', config.getter.type);
     }
-
-    getter.start(setter);
 });
 
 function error() {
