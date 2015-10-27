@@ -9,6 +9,7 @@ class DefaultGetter {
         this.config = config;
         this.currentPosition = 0;
         this.lastPageElementFound = 0;
+        this.elementsParsed = 0;
     }
 
     start(setter) {
@@ -22,11 +23,13 @@ class DefaultGetter {
                     if (err || !data || !data.length) return callback(err || "no data");
 
                     _this.lastPageElementFound = data.length;
+                    _this.elementsParsed += data.length;
                     _this.lastPageElementFound && setter.save(data, callback);
                 });
             },
             () => this.isLastPage(),
             (err) => {
+                console.log('elements parsed:', this.elementsParsed);
                 err && console.log(err);
                 process.exit();
             }
