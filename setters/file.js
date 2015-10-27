@@ -20,9 +20,10 @@ class FileSetter {
     }
 
     save(data, callback) {
+        data.map(obj => console.log(Object.keys(obj).map(key => obj[key]).join(this.config.fieldDelimiter)));
         var rowsToAppend = data.map(obj => Object.keys(obj).map(key => obj[key]).join(this.config.fieldDelimiter)).join('\r\n') + "\r\n";
         var filePath = config.setters.fileSetterFolder + this.config.file;
 
-        fs.writeFile(filePath, rowsToAppend, { flag : 'a' }, callback);
+        fs.appendFile(filePath, rowsToAppend, callback);
     }
 }

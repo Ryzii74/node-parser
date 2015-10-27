@@ -7,7 +7,7 @@ var config = require('../config.js');
 class DefaultGetter {
     constructor(config) {
         this.config = config;
-        this.currentPosition = 0;
+        this.currentPosition = 1;
         this.lastPageElementFound = 0;
         this.elementsParsed = 0;
     }
@@ -37,9 +37,8 @@ class DefaultGetter {
     }
 
     getCurrentPage() {
-        if (this.currentPosition++ === 0) return this.config.startPage;
-
-        return this.config.pageTemplate.replace(config.getters.pageNumberReplacement, this.currentPosition);
+        if (this.config.pageLimit < this.currentPosition) return;
+        return this.config.pageTemplate.replace(config.getters.pageNumberReplacement, this.currentPosition++);
     }
 
     isLastPage() {

@@ -1,6 +1,5 @@
 module.exports = {
     getter : {
-        startPage : 'http://www.sportmaster.ru/catalog/muzhskaya_obuv/botinki/',
         pageTemplate : 'http://www.sportmaster.ru/catalog/muzhskaya_obuv/botinki/?page={{pageNumber}}',
         pageStructure : {
             element : '.sm-category__items-wrap .sm-category__item',
@@ -24,7 +23,7 @@ module.exports = {
     },
     setter : {
         type : 'file',
-        fieldDelimiter : ' ',
+        fieldDelimiter : ';',
         file : 'sportmaster-botinki.txt'
     }
 };
