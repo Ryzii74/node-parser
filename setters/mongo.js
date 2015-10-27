@@ -1,7 +1,7 @@
 "use strict";
 
-var mongo = require('mongodb').MongoClient,
-	config = require('../config');
+var mongo = require('mongodb').MongoClient;
+var config = require('../config');
 
 var db;
 

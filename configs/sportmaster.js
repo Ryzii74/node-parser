@@ -23,6 +23,7 @@ module.exports = {
         }
     },
     setter : {
-        collection : 'sportmaster-botinki'
+        type : 'file',
+        file : 'sportmaster-botinki.txt'
     }
 };

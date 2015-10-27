@@ -6,11 +6,12 @@ module.exports = {
 	},
     setters : {
         path : './setters/',
-        default : 'mongo'
+        default : 'mongo',
+        fileSetterFolder : './resultFiles/'
     },
     getters : {
         path : './getters/',
-        default : 'defaultGetter',
+        default : 'default',
         pageNumberReplacement : '{{pageNumber}}'
     }
 };
