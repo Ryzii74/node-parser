@@ -1,63 +1,25 @@
-var async = require('async'),
-    config = require('./config'),
-    saver = require('./savers/mongo'),
-	loader = require('./loader'),
-	error = false;
+var async = require('async');
+var globalConfig = require('./config.js');
 
-async.whilst(
-	function () {
-		return !error;
-	},
+var settersFiles = require("fs").readdirSync(globalConfig.setters.path);
 
-	function (callback) {
-        getUrl(function (err, data) {
-            if (err) {
-                error = err;
-                callback();
-                return;
-            }
+async.map(settersFiles, (file, callback) => {
+    require(globalConfig.setters.path + file).init(callback);
+}, (err) => {
+    if (err) return console.log(err);
 
-            loader.load(data, function (err) {
-                if (err) {
-                    error = err;
-                    callback();
-                    return;
-                }
-
-                callback();
-            });
-        });
-	},
-
-	function () {
-        console.log(error);
-	}
-);
-
-function getUrl(callback) {
-    if (!config.start && !config.getter) {
-        callback("No start point in config");
-        return;
+    var options = require('optimist').argv;
+    if (!options.config) {
+        return console.log('no config');
     }
 
-    if (config.start) {
-        callback(null, config.start);
-        return;
+    var config = require(`./configs/${options.config}`);
+    if (!config.getter || !config.setter) {
+        return console.log('bad config');
     }
 
-    try {
-        var getter = require('./getters/' + config.getter);
-    } catch (e) {
-        callback("No such getter");
-        return;
-    }
+    var setter = require(globalConfig.setters.path + config.setter.type).create(config.setter);
+    var getter = require('./libs/getter')(config.getter);
 
-    getter.get(function (err, data) {
-        if (err) {
-            callback(err, {});
-            return;
-        }
-
-        callback(null, data);
-    });
-}
+    getter.start(setter);
+});
