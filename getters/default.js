@@ -15,21 +15,17 @@ class DefaultGetter {
         var _this = this;
         async.doWhilst(
             (callback) => {
-                var pageUrl = this.getCurrentPage();
-                if (!pageUrl) return callback('no data');
+                var pageUrl = this.getCurrentPage() || callback('no data');
                 console.log(pageUrl);
 
                 Page(pageUrl, this.config.pageStructure, (err, data) => {
-                    if (err) return callback(err);
-                    if (!data || !data.length) return callback('no data');
+                    if (err || !data || !data.length) return callback(err || "no data");
 
                     _this.lastPageElementFound = data.length;
                     _this.lastPageElementFound && setter.save(data, callback);
                 });
             },
-            () => {
-                return this.isLastPage();
-            },
+            () => this.isLastPage(),
             (err) => {
                 err && console.log(err);
                 process.exit();
@@ -49,11 +45,6 @@ class DefaultGetter {
 }
 
 module.exports = {
-    create : (config) => {
-        var getter = new DefaultGetter(config);
-        return getter;
-    },
-    getter : () => {
-        return DefaultGetter;
-    }
+    create : (config) => new DefaultGetter(config),
+    getter : () => DefaultGetter
 };

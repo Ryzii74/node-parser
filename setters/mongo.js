@@ -17,11 +17,11 @@ module.exports = {
     },
 
     create(config) {
-        return new mongoSetter(config);
+        return new MongoSetter(config);
     }
 };
 
-class mongoSetter {
+class MongoSetter {
     constructor(config) {
         this.config = config;
     }

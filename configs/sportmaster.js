@@ -24,6 +24,7 @@ module.exports = {
     },
     setter : {
         type : 'file',
+        fieldDelimiter : ' ',
         file : 'sportmaster-botinki.txt'
     }
 };
