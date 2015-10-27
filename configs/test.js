@@ -12,6 +12,11 @@ module.exports = {
                 {
                     name : 'points',
                     selector : 'td:eq(4) span'
+                },
+                {
+                    name : 'url',
+                    selector : 'td:eq(4) a',
+                    attribute : 'href'
                 }
             ]
         }

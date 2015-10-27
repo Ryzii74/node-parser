@@ -31,6 +31,7 @@ async.map(settersFiles, (file, callback) => {
             getter.start(setter);
         });
     } catch (e) {
+        console.log(e.stack);
         return error('bad getter', config.getter.type);
     }
 });

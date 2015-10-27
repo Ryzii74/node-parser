@@ -11,7 +11,7 @@ class DefaultGetter {
         this.lastPageElementsFound = 0;
         this.elementsParsed = 0;
 
-        callback(null, this);
+        callback && callback(null, this);
     }
 
     start(setter) {
