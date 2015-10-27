@@ -1,10 +1,10 @@
 "use strict";
 
 var async = require('async');
-var Page = require('./page.js');
+var Page = require('../libs/page.js');
 var config = require('../config.js');
 
-class Getter {
+class DefaultGetter {
     constructor(config) {
         this.config = config;
         this.currentPosition = 0;
@@ -16,6 +16,7 @@ class Getter {
         async.doWhilst(
             (callback) => {
                 var pageUrl = this.getCurrentPage();
+                if (!pageUrl) return callback('no data');
                 console.log(pageUrl);
 
                 Page(pageUrl, this.config.pageStructure, (err, data) => {
@@ -31,6 +32,7 @@ class Getter {
             },
             (err) => {
                 err && console.log(err);
+                process.exit();
             }
         );
     }
@@ -46,7 +48,12 @@ class Getter {
     }
 }
 
-module.exports = (config) => {
-    var getter = new Getter(config);
-    return getter;
+module.exports = {
+    create : (config) => {
+        var getter = new DefaultGetter(config);
+        return getter;
+    },
+    getter : () => {
+        return DefaultGetter;
+    }
 };

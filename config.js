@@ -5,9 +5,12 @@ module.exports = {
 		db	 : 'parser'
 	},
     setters : {
-        path : './setters/'
+        path : './setters/',
+        default : 'mongo'
     },
     getters : {
+        path : './getters/',
+        default : 'defaultGetter',
         pageNumberReplacement : '{{pageNumber}}'
     }
 };

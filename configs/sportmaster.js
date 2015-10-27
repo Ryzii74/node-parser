@@ -23,7 +23,6 @@ module.exports = {
         }
     },
     setter : {
-        type : 'mongo',
         collection : 'sportmaster-botinki'
     }
 };

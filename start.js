@@ -18,8 +18,8 @@ async.map(settersFiles, (file, callback) => {
         return console.log('bad config');
     }
 
-    var setter = require(globalConfig.setters.path + config.setter.type).create(config.setter);
-    var getter = require('./libs/getter')(config.getter);
+    var setter = require(globalConfig.setters.path + (config.setter.type || globalConfig.setters.default)).create(config.setter);
+    var getter = require(globalConfig.getters.path + (config.getter.type || globalConfig.getters.default)).create(config.getter);
 
     getter.start(setter);
 });
