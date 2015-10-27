@@ -1,7 +1,7 @@
 module.exports = {
     getter : {
         pageTemplate : 'http://chel.en.cx/UserList.aspx?page={{pageNumber}}',
-        pageLimit : 5,
+        elementsLimit : 50,
         pageStructure : {
             element : '#MainForm table:eq(1) tr:nth-child(odd)',
             fields : [
