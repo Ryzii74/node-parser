@@ -7,15 +7,14 @@ class MongoGetter extends ListGetter {
     constructor(config, callback) {
         super(config);
 
-        var _this = this;
         mongo.connect(config.dbUrl, (err, database) => {
             if (err) return callback(err);
 
             database.collection(config.collection).find({}).toArray((err, data) => {
                 if (err) return console.log(err);
 
-                _this.config.urlList = data.map(config.dbMapper);
-                callback(null, _this);
+                this.config.urlList = data.map(config.dbMapper);
+                callback(null, this);
             });
         });
     }

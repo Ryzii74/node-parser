@@ -15,7 +15,6 @@ class DefaultGetter {
     }
 
     start(setter) {
-        var _this = this;
         async.doWhilst(
             (callback) => {
                 var pageUrl = this.getCurrentPage() || callback('no data');
@@ -24,8 +23,8 @@ class DefaultGetter {
                 Page(pageUrl, this.config.pageStructure, (err, data) => {
                     if (err || !data || !data.length) return callback(err || "no data");
 
-                    var dataToSave = data.slice(0, _this.getRealCountToSave(data.length));
-                    _this.lastPageElementsFound && setter.save(dataToSave, callback);
+                    var dataToSave = data.slice(0, this.getRealCountToSave(data.length));
+                    this.lastPageElementsFound && setter.save(dataToSave, callback);
                 });
             },
             () => this.isLastPage(),
