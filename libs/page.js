@@ -11,7 +11,13 @@ class Page {
     }
 
     get(callback) {
-        request(this.url, (error, response, body) => {
+        request({
+            url : this.url,
+            headers : {
+                cookie : this.config.cookie,
+                "User-Agent" : "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"
+            }
+        }, (error, response, body) => {
             if (error || response.statusCode != 200) {
                 callback(error, {});
                 return;

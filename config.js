@@ -4,6 +4,7 @@ module.exports = {
 		port : '27017',
 		db	 : 'parser'
 	},
+    defaultEncoding : "utf-8",
     setters : {
         path : './setters/',
         default : 'mongo',
