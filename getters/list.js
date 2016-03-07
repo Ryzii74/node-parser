@@ -6,6 +6,18 @@ class ListGetter extends DefaultGetter {
     getCurrentPage() {
         return this.config.urlList.shift();
     }
+
+    isExit(isLastPage) {
+        return false;
+    }
+
+    isExitOnNoPageData(data) {
+        return false;
+    }
+
+    isNotLastPage() {
+        return true;
+    }
 }
 
 module.exports = {

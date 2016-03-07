@@ -1,23 +1,19 @@
 "use strict";
 
 var mongo = require('mongodb').MongoClient;
-var config = require('../config');
+var globalConfig = require('../config');
 
 var db;
 
 module.exports = {
-    init(callback) {
-        var dbUrl = 'mongodb://' + config.mongo.host + ':' + config.mongo.port + '/' + config.mongo.db;
+    init(config, callback) {
+        var dbUrl = 'mongodb://' + globalConfig.mongo.host + ':' + globalConfig.mongo.port + '/' + globalConfig.mongo.db;
         mongo.connect(dbUrl, (err, database) => {
             if (err) return callback(err);
 
             db = database;
-            callback(null);
+            callback(null, new MongoSetter(config));
         });
-    },
-
-    create(config) {
-        return new MongoSetter(config);
     }
 };
 

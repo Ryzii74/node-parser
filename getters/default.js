@@ -3,11 +3,12 @@
 var async = require('async');
 var Page = require('../libs/page.js');
 var config = require('../config.js');
+var log = require('debug')('urls');
 
 class DefaultGetter {
     constructor(config, callback) {
         this.config = config;
-        this.currentPosition = 1;
+        this.currentPosition = config.startPage || 1;
         this.lastPageElementsFound = 0;
         this.elementsParsed = 0;
 
@@ -17,23 +18,38 @@ class DefaultGetter {
     start(setter) {
         async.doWhilst(
             (callback) => {
-                var pageUrl = this.getCurrentPage() || callback('no data');
-                console.log(pageUrl);
+                var pageUrl = this.getCurrentPage();
+                if (!pageUrl) return callback('no pageUrls');
+                log(pageUrl);
 
-                Page(pageUrl, this.config.pageStructure, (err, data) => {
-                    if (err || !data || !data.length) return callback(err || "no data");
+                Page(pageUrl, this.config.pageStructure, (err, data, isLastPage) => {
+                    if (err || this.isExitOnNoPageData(data)) return callback(err || "no data on page");
 
-                    var dataToSave = data.slice(0, this.getRealCountToSave(data.length));
-                    this.lastPageElementsFound && setter.save(dataToSave, callback);
+                    log(data);
+                    var dataToSave = data && data.slice && data.slice(0, this.getRealCountToSave(data.length)) || null;
+
+                    log("lastPageElementsFound", this.lastPageElementsFound);
+                    if (this.lastPageElementsFound && dataToSave) return setter.save(dataToSave, callback);
+
+                    if (this.isExit(isLastPage)) return callback("last page detected");
+                    callback(null);
                 });
             },
-            () => this.isLastPage(),
+            () => this.isNotLastPage(),
             (err) => {
                 console.log('elements parsed:', this.elementsParsed);
                 err && console.log(err);
                 process.exit();
             }
         );
+    }
+
+    isExit(isLastPage) {
+        return isLastPage;
+    }
+
+    isExitOnNoPageData(data) {
+        return !data || !data.length;
     }
 
     getRealCountToSave(count) {
@@ -52,7 +68,7 @@ class DefaultGetter {
         return this.config.pageTemplate.replace(config.getters.pageNumberReplacement, this.currentPosition++);
     }
 
-    isLastPage() {
+    isNotLastPage() {
         return this.lastPageElementsFound
             && (!this.config.pageLimit || this.config.pageLimit > this.currentPosition)
             && (!this.config.elementsLimit || this.config.elementsLimit > this.elementsParsed);

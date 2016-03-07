@@ -8,6 +8,8 @@
     "cheerio": "^0.17.0",
     "cheerio-advanced-selectors": "^1.1.0",
     "cheerio-eq": "^1.0.1",
+    "debug": "^2.2.0",
+    "iconv": "^2.1.11",
     "mongodb": "^1.4.8",
     "optimist": "^0.6.1",
     "request": "^2.40.0"

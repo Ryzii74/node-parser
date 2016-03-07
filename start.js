@@ -1,28 +1,19 @@
 var async = require('async');
 var globalConfig = require('./config.js');
 
-var settersFiles = require("fs").readdirSync(globalConfig.setters.path);
+var options = require('optimist').argv;
+if (!options.config) error('no config');
 
-async.map(settersFiles, (file, callback) => {
-    require(globalConfig.setters.path + file).init(callback);
-}, (err) => {
+try {
+    var config = require(`./configs/${options.config}`);
+} catch (e) {
+    return error('no such config', options.config);
+}
+
+if (!config.setter || !config.getter) return error('bad config');
+
+require(globalConfig.setters.path + (config.setter.type || globalConfig.setters.default)).init(config.setter, function (err, setter) {
     if (err) return error(err);
-
-    var options = require('optimist').argv;
-    if (!options.config) error('no config');
-
-    try {
-        var config = require(`./configs/${options.config}`);
-    } catch (e) {
-        return error('no such config', options.config);
-    }
-    if (!config.getter || !config.setter) return error('bad config');
-
-    try {
-        var setter = require(globalConfig.setters.path + (config.setter.type || globalConfig.setters.default)).create(config.setter);
-    } catch (e) {
-        return error('bad setter', config.setter.type);
-    }
 
     try {
         require(globalConfig.getters.path + (config.getter.type || globalConfig.getters.default)).create(config.getter, (err, getter) => {

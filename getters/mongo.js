@@ -18,6 +18,18 @@ class MongoGetter extends ListGetter {
             });
         });
     }
+
+    isExit(isLastPage) {
+        return false;
+    }
+
+    isExitOnNoPageData(data) {
+        return false;
+    }
+
+    isNotLastPage() {
+        return true;
+    }
 }
 
 module.exports = {
