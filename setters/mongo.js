@@ -22,12 +22,27 @@ class MongoSetter {
         this.config = config;
     }
 
-    save(data, callback) {
+    save(url, data, callback) {
         var collection = db.collection(this.config.collection);
-        collection.insert(data, function(err) {
-            if (err) return callback(err);
+        var type = this.config.saveType || globalConfig.setters.defaultSaveType;
 
-            callback(null);
-        });
+        if (type === 'insert') {
+            collection.insert(data, function(err) {
+                if (err) return callback(err);
+
+                callback(null);
+            });
+        }
+
+        if (type === 'update') {
+            var query = this.config.getQuery(url);
+            collection.updateOne(query, {
+                $set : data[0]
+            }, function(err) {
+                if (err) return callback(err);
+
+                callback(null);
+            });
+        }
     }
 }

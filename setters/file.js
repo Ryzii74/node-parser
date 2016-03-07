@@ -15,7 +15,7 @@ class FileSetter {
         this.config = config;
     }
 
-    save(data, callback) {
+    save(url, data, callback) {
         var rowsToAppend = data.map(obj => Object.keys(obj).map(key => obj[key]).join(this.config.fieldDelimiter)).join('\r\n') + "\r\n";
         var filePath = config.setters.fileSetterFolder + this.config.file;
 

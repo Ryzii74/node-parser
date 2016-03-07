@@ -8,7 +8,8 @@ module.exports = {
     setters : {
         path : './setters/',
         default : 'mongo',
-        fileSetterFolder : './resultFiles/'
+        fileSetterFolder : './resultFiles/',
+        defaultSaveType : 'insert'
     },
     getters : {
         path : './getters/',

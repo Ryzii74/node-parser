@@ -29,7 +29,7 @@ class DefaultGetter {
                     var dataToSave = data && data.slice && data.slice(0, this.getRealCountToSave(data.length)) || null;
 
                     log("lastPageElementsFound", this.lastPageElementsFound);
-                    if (this.lastPageElementsFound && dataToSave) return setter.save(dataToSave, callback);
+                    if (this.lastPageElementsFound && dataToSave) return setter.save(pageUrl, dataToSave, callback);
 
                     if (this.isExit(isLastPage)) return callback("last page detected");
                     callback(null);
