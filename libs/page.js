@@ -44,6 +44,8 @@ class Page {
         var elements = [];
 
         $blocks.each((index, $block) => {
+            if (!this.config.filter($block)) return;
+
             var element = {};
             this.config.fields.forEach((field) => {
                 if (field.type === 'const') return element[field.name] = field.value;
