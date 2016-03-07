@@ -49,6 +49,7 @@ class Page {
                 if (field.type === 'const') return element[field.name] = field.value;
 
                 var $el = cheerioAdv.find($, field.selector, $block);
+                if (field.getter) return element[field.name] = field.getter($el);
                 if (field.attribute) return element[field.name] = $el.attr(field.attribute);
                 if (field.method) return element[field.name] = $el[field.method]();
                 return element[field.name] = $el.text();
