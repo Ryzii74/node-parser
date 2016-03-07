@@ -46,6 +46,8 @@ class Page {
         $blocks.each((index, $block) => {
             var element = {};
             this.config.fields.forEach((field) => {
+                if (field.type === 'const') return element[field.name] = field.value;
+
                 var $el = cheerioAdv.find($, field.selector, $block);
                 if (field.attribute) return element[field.name] = $el.attr(field.attribute);
                 if (field.method) return element[field.name] = $el[field.method]();
