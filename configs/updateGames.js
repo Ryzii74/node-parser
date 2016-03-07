@@ -11,7 +11,13 @@ module.exports = {
             fields : [
                 {
                     name : 'scenario',
-                    selector : 'tbody tr:eq(8) span.white_bo'
+                    selector : 'tr:eq(8) span.white_bold',
+                    getter : function ($el) {
+                        return $el.text()
+                            .replace(/\n/g, '')
+                            .replace(/\r/g, '')
+                            .replace(/\t/g, '')
+                    }
                 }
             ]
         }

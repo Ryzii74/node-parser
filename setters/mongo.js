@@ -23,6 +23,7 @@ class MongoSetter {
     }
 
     save(url, data, callback) {
+        console.log(data);
         var collection = db.collection(this.config.collection);
         var type = this.config.saveType || globalConfig.setters.defaultSaveType;
 
@@ -36,7 +37,7 @@ class MongoSetter {
 
         if (type === 'update') {
             var query = this.config.getQuery(url);
-            collection.updateOne(query, {
+            collection.update(query, {
                 $set : data[0]
             }, function(err) {
                 if (err) return callback(err);
