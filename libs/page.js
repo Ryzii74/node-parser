@@ -44,7 +44,7 @@ class Page {
         var elements = [];
 
         $blocks.each((index, $block) => {
-            if (!this.config.filter($block)) return;
+            if (this.config.filter && !this.config.filter($block)) return;
 
             var element = {};
             this.config.fields.forEach((field) => {
