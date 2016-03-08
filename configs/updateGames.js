@@ -4,8 +4,11 @@ const DOMEN = 'yaroslavl.en.cx';
 
 module.exports = {
     getter : {
-        type : 'list',
-        urlList : [ `http://minsk.en.cx/GameDetails.aspx?gid=53962` ],
+        type : 'mongo',
+        collection : 'games',
+        query : { scenario : { $exists : false } },
+        dbUrl : 'mongodb://127.0.0.1:27017/parser',
+        dbMapper : (el) => el.url,
         pageStructure : {
             element : '.gameInfo',
             fields : [

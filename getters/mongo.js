@@ -10,7 +10,7 @@ class MongoGetter extends ListGetter {
         mongo.connect(config.dbUrl, (err, database) => {
             if (err) return callback(err);
 
-            database.collection(config.collection).find({}).toArray((err, data) => {
+            database.collection(config.collection).find(config.query || {}).toArray((err, data) => {
                 if (err) return console.log(err);
 
                 this.config.urlList = data.map(config.dbMapper);
