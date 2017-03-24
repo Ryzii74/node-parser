@@ -1,9 +1,9 @@
-"use strict";
 
-var async = require('async');
-var Page = require('../libs/page.js');
-var config = require('../config.js');
-var log = require('debug')('urls');
+
+const async = require('async');
+const Page = require('../libs/page.js');
+const config = require('../config.js');
+const log = require('debug')('urls');
 
 class DefaultGetter {
     constructor(config, callback) {
@@ -12,35 +12,50 @@ class DefaultGetter {
         this.lastPageElementsFound = 0;
         this.elementsParsed = 0;
 
-        callback && callback(null, this);
+        if (callback) callback(null, this);
     }
 
     start(setter) {
         async.doWhilst(
             (callback) => {
-                var pageUrl = this.getCurrentPage();
-                if (!pageUrl) return callback('no pageUrls');
+                const pageUrl = this.getCurrentPage();
+                if (!pageUrl) {
+                    callback('no pageUrls');
+                    return;
+                }
                 log(pageUrl);
 
                 Page(pageUrl, this.config.pageStructure, (err, data, isLastPage) => {
-                    if (err || this.isExitOnNoPageData(data)) return callback(err || "no data on page");
+                    if (err || this.isExitOnNoPageData(data)) {
+                        callback(err || 'no data on page');
+                        return;
+                    }
 
                     log(data);
-                    var dataToSave = data && data.slice && data.slice(0, this.getRealCountToSave(data.length)) || null;
+                    let dataToSave;
+                    if (data) {
+                        dataToSave = data.slice(0, this.getRealCountToSave(data.length));
+                    }
 
-                    log("lastPageElementsFound", this.lastPageElementsFound);
-                    if (this.lastPageElementsFound && dataToSave) return setter.save(pageUrl, dataToSave, callback);
+                    log('lastPageElementsFound', this.lastPageElementsFound);
+                    if (this.lastPageElementsFound && dataToSave) {
+                        setter.save(pageUrl, dataToSave, callback);
+                        return;
+                    }
 
-                    if (this.isExit(isLastPage)) return callback("last page detected");
+                    if (this.isExit(isLastPage)) {
+                        callback('last page detected');
+                        return;
+                    }
                     callback(null);
                 });
             },
             () => this.isNotLastPage(),
             (err) => {
                 console.log('elements parsed:', this.elementsParsed);
-                err && console.log(err);
+                if (err) console.log(err);
                 process.exit();
-            }
+            },
         );
     }
 
@@ -65,7 +80,10 @@ class DefaultGetter {
     }
 
     getCurrentPage() {
-        return this.config.pageTemplate.replace(config.getters.pageNumberReplacement, this.currentPosition++);
+        return this.config.pageTemplate.replace(
+            config.getters.pageNumberReplacement,
+            this.currentPosition++,
+        );
     }
 
     isNotLastPage() {
@@ -76,6 +94,6 @@ class DefaultGetter {
 }
 
 module.exports = {
-    create : (config, callback) => new DefaultGetter(config, callback),
-    getter : () => DefaultGetter
+    create: (config, callback) => new DefaultGetter(config, callback),
+    getter: () => DefaultGetter,
 };

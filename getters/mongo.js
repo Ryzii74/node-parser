@@ -1,17 +1,23 @@
-"use strict";
 
-var mongo = require('mongodb').MongoClient;
-var ListGetter = require('./list').getter();
+
+const mongo = require('mongodb').MongoClient;
+const ListGetter = require('./list').getter();
 
 class MongoGetter extends ListGetter {
     constructor(config, callback) {
         super(config);
 
         mongo.connect(config.dbUrl, (err, database) => {
-            if (err) return callback(err);
+            if (err) {
+                callback(err);
+                return;
+            }
 
             database.collection(config.collection).find(config.query || {}).toArray((err, data) => {
-                if (err) return console.log(err);
+                if (err) {
+                    console.log(err);
+                    return;
+                }
 
                 this.config.urlList = data.map(config.dbMapper);
                 callback(null, this);
@@ -33,6 +39,6 @@ class MongoGetter extends ListGetter {
 }
 
 module.exports = {
-    create : (config, callback) => new MongoGetter(config, callback),
-    getter : () => MongoGetter
+    create: (config, callback) => new MongoGetter(config, callback),
+    getter: () => MongoGetter,
 };

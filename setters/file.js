@@ -1,14 +1,6 @@
-"use strict";
+const fs = require('fs');
 
-var fs = require('fs');
-
-var config = require('../config');
-
-module.exports = {
-    init(config, callback) {
-        callback(null, new FileSetter(config));
-    }
-};
+const config = require('../config');
 
 class FileSetter {
     constructor(config) {
@@ -16,9 +8,15 @@ class FileSetter {
     }
 
     save(url, data, callback) {
-        var rowsToAppend = data.map(obj => Object.keys(obj).map(key => obj[key]).join(this.config.fieldDelimiter)).join('\r\n') + "\r\n";
-        var filePath = config.setters.fileSetterFolder + this.config.file;
+        const rowsToAppend = `${data.map(obj => Object.keys(obj).map(key => obj[key]).join(this.config.fieldDelimiter)).join('\r\n')}\r\n`;
+        const filePath = config.setters.fileSetterFolder + this.config.file;
 
         fs.appendFile(filePath, rowsToAppend, callback);
     }
 }
+
+module.exports = {
+    init(config, callback) {
+        callback(null, new FileSetter(config));
+    },
+};

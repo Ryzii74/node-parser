@@ -1,21 +1,7 @@
-"use strict";
+const mongo = require('mongodb').MongoClient;
+const globalConfig = require('../config');
 
-var mongo = require('mongodb').MongoClient;
-var globalConfig = require('../config');
-
-var db;
-
-module.exports = {
-    init(config, callback) {
-        var dbUrl = 'mongodb://' + globalConfig.mongo.host + ':' + globalConfig.mongo.port + '/' + globalConfig.mongo.db;
-        mongo.connect(dbUrl, (err, database) => {
-            if (err) return callback(err);
-
-            db = database;
-            callback(null, new MongoSetter(config));
-        });
-    }
-};
+let db;
 
 class MongoSetter {
     constructor(config) {
@@ -24,26 +10,48 @@ class MongoSetter {
 
     save(url, data, callback) {
         console.log(data);
-        var collection = db.collection(this.config.collection);
-        var type = this.config.saveType || globalConfig.setters.defaultSaveType;
+        const collection = db.collection(this.config.collection);
+        const type = this.config.saveType || globalConfig.setters.defaultSaveType;
 
         if (type === 'insert') {
-            collection.insert(data, function(err) {
-                if (err) return callback(err);
+            collection.insert(data, (err) => {
+                if (err) {
+                    callback(err);
+                    return;
+                }
 
                 callback(null);
             });
         }
 
         if (type === 'update') {
-            var query = this.config.getQuery(url);
+            const query = this.config.getQuery(url);
             collection.update(query, {
-                $set : data[0]
-            }, function(err) {
-                if (err) return callback(err);
+                $set: data[0],
+            }, (err) => {
+                if (err) {
+                    callback(err);
+                    return;
+                }
 
                 callback(null);
             });
         }
     }
 }
+
+module.exports = {
+    init(config, callback) {
+        const conf = globalConfig.mongo;
+        const dbUrl = `mongodb://${conf.host}:${conf.port}/${conf.db}`;
+        mongo.connect(dbUrl, (err, database) => {
+            if (err) {
+                callback(err);
+                return;
+            }
+
+            db = database;
+            callback(null, new MongoSetter(config));
+        });
+    },
+};

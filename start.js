@@ -1,33 +1,54 @@
-var async = require('async');
-var globalConfig = require('./config.js');
+const async = require('async');
+const globalConfig = require('./config.js');
+const optimist = require('optimist');
 
-var options = require('optimist').argv;
-if (!options.config) error('no config');
-
-try {
-    var config = require(`./configs/${options.config}`);
-} catch (e) {
-    return error('no such config', options.config);
-}
-
-if (!config.setter || !config.getter) return error('bad config');
-
-require(globalConfig.setters.path + (config.setter.type || globalConfig.setters.default)).init(config.setter, function (err, setter) {
-    if (err) return error(err);
-
-    try {
-        require(globalConfig.getters.path + (config.getter.type || globalConfig.getters.default)).create(config.getter, (err, getter) => {
-            if (err) return error('err creating getter');
-
-            getter.start(setter);
-        });
-    } catch (e) {
-        console.log(e.stack);
-        return error('bad getter', config.getter.type);
-    }
-});
-
-function error() {
-    console.log.apply(null, arguments);
+function error(...args) {
+    console.log.apply(null, args);
     process.exit();
 }
+
+const options = optimist.argv;
+if (!options.config) error('no config');
+
+let config;
+try {
+    /*eslint-disable */
+    config = require(`./configs/${options.config}`);
+    /*eslint-enable */
+} catch (e) {
+    error('no such config', options.config);
+    process.exit(0);
+}
+
+if (!config.setter || !config.getter) {
+    error('bad config');
+    process.exit(0);
+}
+
+/*eslint-disable */
+require(globalConfig.setters.path + (config.setter.type || globalConfig.setters.default))
+/*eslint-enable */
+    .init(config.setter, (err, setter) => {
+        if (err) {
+            error(err);
+            return;
+        }
+
+        try {
+            /*eslint-disable */
+            require(globalConfig.getters.path + (config.getter.type || globalConfig.getters.default))
+            /*eslint-enable */
+                .create(config.getter, (err, getter) => {
+                    if (err) {
+                        error('err creating getter');
+                        return;
+                    }
+
+                    getter.start(setter);
+                });
+        } catch (e) {
+            console.log(e.stack);
+            error('bad getter', config.getter.type);
+            return;
+        }
+    });

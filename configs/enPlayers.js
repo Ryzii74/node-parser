@@ -1,21 +1,21 @@
 module.exports = {
-    getter : {
-        type : 'list',
-        urlList : [
-            'http://cp.en.cx/UserList.aspx?mode=full'
+    getter: {
+        type: 'list',
+        urlList: [
+            'http://cp.en.cx/UserList.aspx?mode=full',
         ],
-        pageStructure : {
-            element : '#MainForm table:eq(1) tr',
-            fields : [
+        pageStructure: {
+            element: '#MainForm table:eq(1) tr',
+            fields: [
                 {
-                    name : 'id',
-                    selector : 'td:eq(1)'
-                }
-            ]
-        }
+                    name: 'id',
+                    selector: 'td:eq(1)',
+                },
+            ],
+        },
     },
-    setter : {
-        type : 'mongo',
-        file : 'enplayers'
-    }
+    setter: {
+        type: 'mongo',
+        file: 'enplayers',
+    },
 };

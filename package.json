@@ -21,6 +21,7 @@
   },
   "scripts": {
     "lint": "./node_modules/.bin/eslint . --ext .js",
+    "lintfix": "./node_modules/.bin/eslint . --ext .js --fix",
     "start": "node start.js"
   },
   "license": "ISC"

@@ -12,6 +12,7 @@ module.exports = {
         "no-shadow": 0,
         "no-underscore-dangle": 0,
         "no-console": 0,
+        "no-mixed-operators": 0,
 
         // только на клиенте пока нет нормального импорта
         "no-unused-vars": 0,
