@@ -1,4 +1,3 @@
-const async = require('async');
 const globalConfig = require('./config.js');
 const optimist = require('optimist');
 
@@ -49,6 +48,5 @@ require(globalConfig.setters.path + (config.setter.type || globalConfig.setters.
         } catch (e) {
             console.log(e.stack);
             error('bad getter', config.getter.type);
-            return;
         }
     });
