@@ -1,9 +1,6 @@
 'use strict';
 
-const mongo = require('mongodb').MongoClient;
 const globalConfig = require('../config');
-
-let db;
 
 class MongoSetter {
     constructor(config) {
@@ -27,18 +24,4 @@ class MongoSetter {
     }
 }
 
-module.exports = {
-    init(config, callback) {
-        const conf = globalConfig.mongo;
-        const dbUrl = `mongodb://${conf.host}:${conf.port}/${conf.db}`;
-        mongo.connect(dbUrl, (err, database) => {
-            if (err) {
-                callback(err);
-                return;
-            }
-
-            db = database;
-            callback(null, new MongoSetter(config));
-        });
-    },
-};
+module.exports = config => new MongoSetter(config);
