@@ -11,33 +11,18 @@ class MongoSetter {
     }
 
     save(url, data, callback) {
-        console.log(data);
         const collection = db.collection(this.config.collection);
         const type = this.config.saveType || globalConfig.setters.defaultSaveType;
 
         if (type === 'insert') {
-            collection.insert(data, (err) => {
-                if (err) {
-                    callback(err);
-                    return;
-                }
-
-                callback(null);
-            });
+            collection.insert(data, err => callback(err));
         }
 
         if (type === 'update') {
             const query = this.config.getQuery(url);
             collection.update(query, {
                 $set: data[0],
-            }, (err) => {
-                if (err) {
-                    callback(err);
-                    return;
-                }
-
-                callback(null);
-            });
+            }, err => callback(err));
         }
     }
 }
