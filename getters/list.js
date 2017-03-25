@@ -1,4 +1,4 @@
-
+'use strict';
 
 const DefaultGetter = require('./default').getter();
 

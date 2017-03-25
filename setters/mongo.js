@@ -1,3 +1,5 @@
+'use strict';
+
 const mongo = require('mongodb').MongoClient;
 const globalConfig = require('../config');
 

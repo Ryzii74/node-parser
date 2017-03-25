@@ -1,4 +1,4 @@
-
+'use strict';
 
 const mongo = require('mongodb').MongoClient;
 const ListGetter = require('./list').getter();
