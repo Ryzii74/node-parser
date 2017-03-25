@@ -1,6 +1,7 @@
 'use strict';
 
 const globalConfig = require('../config');
+const db = require('../libs/db');
 
 class MongoSetter {
     constructor(config) {
@@ -24,4 +25,7 @@ class MongoSetter {
     }
 }
 
-module.exports = config => new MongoSetter(config);
+module.exports = async (config) => {
+    await db.init();
+    return new MongoSetter(config);
+};

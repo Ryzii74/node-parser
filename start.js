@@ -1,3 +1,5 @@
+'use strict';
+
 const globalConfig = require('./config.js');
 const optimist = require('optimist');
 
@@ -24,29 +26,26 @@ if (!config.setter || !config.getter) {
     process.exit(0);
 }
 
-/*eslint-disable */
-require(globalConfig.setters.path + (config.setter.type || globalConfig.setters.default))
-/*eslint-enable */
-    .init(config.setter, (err, setter) => {
-        if (err) {
-            error(err);
-            return;
-        }
+(async function () {
+    const setterType = config.setter.type || globalConfig.setters.default;
+    const setterPath = globalConfig.setters.path;
 
-        try {
-            /*eslint-disable */
-            require(globalConfig.getters.path + (config.getter.type || globalConfig.getters.default))
-            /*eslint-enable */
-                .create(config.getter, (err, getter) => {
-                    if (err) {
-                        error('err creating getter');
-                        return;
-                    }
+    try {
+        /*eslint-disable */
+        const setter = await require(setterPath).init(config.setter);
+        require(globalConfig.getters.path + (config.getter.type || globalConfig.getters.default))
+        /*eslint-enable */
+            .create(config.getter, (err, getter) => {
+                if (err) {
+                    error('err creating getter');
+                    return;
+                }
 
-                    getter.start(setter);
-                });
-        } catch (e) {
-            console.log(e.stack);
-            error('bad getter', config.getter.type);
-        }
-    });
+                getter.start(setter);
+            });
+    } catch (err) {
+        error(err);
+    }
+})();
+
+

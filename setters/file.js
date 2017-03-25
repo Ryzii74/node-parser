@@ -18,7 +18,7 @@ class FileSetter {
 }
 
 module.exports = {
-    init(config, callback) {
-        callback(null, new FileSetter(config));
+    async init(config) {
+        return new FileSetter(config);
     },
 };
