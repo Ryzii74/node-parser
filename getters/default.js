@@ -6,13 +6,11 @@ const config = require('../config.js');
 const log = require('debug')('urls');
 
 class DefaultGetter {
-    constructor(config, callback) {
+    constructor(config) {
         this.config = config;
         this.currentPosition = config.startPage || 1;
         this.lastPageElementsFound = 0;
         this.elementsParsed = 0;
-
-        if (callback) callback(null, this);
     }
 
     start(setter) {
@@ -94,6 +92,6 @@ class DefaultGetter {
 }
 
 module.exports = {
-    create: (config, callback) => new DefaultGetter(config, callback),
+    create: config => new DefaultGetter(config),
     getter: () => DefaultGetter,
 };

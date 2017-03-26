@@ -39,6 +39,6 @@ class MongoGetter extends ListGetter {
 }
 
 module.exports = {
-    create: (config, callback) => new MongoGetter(config, callback),
+    create: config => new MongoGetter(config),
     getter: () => MongoGetter,
 };

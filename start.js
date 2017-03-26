@@ -28,24 +28,16 @@ if (!config.setter || !config.getter) {
 
 (async function () {
     const setterType = config.setter.type || globalConfig.setters.default;
-    const setterPath = globalConfig.setters.path;
+    const setterPath = globalConfig.setters.path + setterType;
 
     try {
         /*eslint-disable */
         const setter = await require(setterPath).init(config.setter);
-        require(globalConfig.getters.path + (config.getter.type || globalConfig.getters.default))
+        const getterType = config.getter.type || globalConfig.getters.default;
+        const getter = require(globalConfig.getters.path + getterType).create(config.getter);
         /*eslint-enable */
-            .create(config.getter, (err, getter) => {
-                if (err) {
-                    error('err creating getter');
-                    return;
-                }
-
-                getter.start(setter);
-            });
+        getter.start(setter);
     } catch (err) {
         error(err);
     }
 })();
-
-

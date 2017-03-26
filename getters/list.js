@@ -21,6 +21,6 @@ class ListGetter extends DefaultGetter {
 }
 
 module.exports = {
-    create: (config, callback) => new ListGetter(config, callback),
+    create: config => new ListGetter(config),
     getter: () => ListGetter,
 };
