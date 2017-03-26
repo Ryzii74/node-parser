@@ -34,7 +34,8 @@ if (!config.setter || !config.getter) {
         /*eslint-disable */
         const setter = await require(setterPath).init(config.setter);
         const getterType = config.getter.type || globalConfig.getters.default;
-        const getter = require(globalConfig.getters.path + getterType).create(config.getter);
+        const getter = await require(globalConfig.getters.path + getterType).create(config.getter);
+        await getter.init();
         /*eslint-enable */
         getter.start(setter);
     } catch (err) {

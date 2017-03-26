@@ -1,28 +1,15 @@
 'use strict';
 
-const mongo = require('mongodb').MongoClient;
+const db = require('../libs/db');
 const ListGetter = require('./list').getter();
 
 class MongoGetter extends ListGetter {
-    constructor(config, callback) {
-        super(config);
-
-        mongo.connect(config.dbUrl, (err, database) => {
-            if (err) {
-                callback(err);
-                return;
-            }
-
-            database.collection(config.collection).find(config.query || {}).toArray((err, data) => {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-
-                this.config.urlList = data.map(config.dbMapper);
-                callback(null, this);
-            });
-        });
+    async init() {
+        const data = await db.get()
+            .collection(this.config.collection)
+            .find(this.config.query || {})
+            .toArray();
+        this.config.urlList = data.map(this.config.dbMapper);
     }
 
     isExit(isLastPage) {

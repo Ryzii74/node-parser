@@ -13,6 +13,8 @@ class DefaultGetter {
         this.elementsParsed = 0;
     }
 
+    async init() {}
+
     start(setter) {
         async.doWhilst(
             (callback) => {
