@@ -1,5 +1,6 @@
 'use strict';
 
+const fs = require('fs');
 const globalConfig = require('./config.js');
 const optimist = require('optimist');
 
@@ -10,17 +11,9 @@ function error(...args) {
 
 const options = optimist.argv;
 if (!options.config) error('no config');
+if (!fs.existsSync(`./configs/${options.config}`)) error('no config file');
 
-let config;
-try {
-    /*eslint-disable */
-    config = require(`./configs/${options.config}`);
-    /*eslint-enable */
-} catch (e) {
-    error('no such config', options.config);
-    process.exit(0);
-}
-
+const config = require(`./configs/${options.config}`);
 if (!config.setter || !config.getter) {
     error('bad config');
     process.exit(0);
