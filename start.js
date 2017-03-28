@@ -11,9 +11,11 @@ function error(...args) {
 
 const options = optimist.argv;
 if (!options.config) error('no config');
-if (!fs.existsSync(`./configs/${options.config}`)) error('no config file');
+if (!fs.existsSync(`./configs/${options.config}.js`)) error('no config file');
 
+/*eslint-disable */
 const config = require(`./configs/${options.config}`);
+/*eslint-enable */
 if (!config.setter || !config.getter) {
     error('bad config');
     process.exit(0);
