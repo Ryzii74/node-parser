@@ -55,7 +55,7 @@ class DefaultGetter {
                 console.log('elements parsed:', this.elementsParsed);
                 if (err) console.log(err);
                 process.exit();
-            },
+            }
         );
     }
 
@@ -82,7 +82,7 @@ class DefaultGetter {
     getCurrentPage() {
         return this.config.pageTemplate.replace(
             config.getters.pageNumberReplacement,
-            this.currentPosition++,
+            this.currentPosition++
         );
     }
 
