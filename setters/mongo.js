@@ -9,7 +9,7 @@ class MongoSetter {
     }
 
     save(url, data, callback) {
-        const collection = db.collection(this.config.collection);
+        const collection = db.get().collection(this.config.collection);
         const type = this.config.saveType || globalConfig.setters.defaultSaveType;
 
         if (type === 'insert') {
