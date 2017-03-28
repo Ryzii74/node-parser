@@ -25,7 +25,9 @@ class MongoSetter {
     }
 }
 
-module.exports = async (config) => {
-    await db.init();
-    return new MongoSetter(config);
+module.exports = {
+    async init(config) {
+        await db.init();
+        return new MongoSetter(config);
+    },
 };
