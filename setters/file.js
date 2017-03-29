@@ -9,11 +9,20 @@ class FileSetter {
         this.config = config;
     }
 
-    save(url, data, callback) {
-        const rowsToAppend = `${data.map(obj => Object.keys(obj).map(key => obj[key]).join(this.config.fieldDelimiter)).join('\r\n')}\r\n`;
-        const filePath = config.setters.fileSetterFolder + this.config.file;
+    save(url, data) {
+        new Promise((resolve, reject) => {
+            const rowsToAppend = `${data.map(obj => Object.keys(obj).map(key => obj[key]).join(this.config.fieldDelimiter)).join('\r\n')}\r\n`;
+            const filePath = config.setters.fileSetterFolder + this.config.file;
 
-        fs.appendFile(filePath, rowsToAppend, callback);
+            fs.appendFile(filePath, rowsToAppend, err => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                resolve();
+            });
+        });
     }
 }
 

@@ -39,7 +39,10 @@ class DefaultGetter {
 
                     log('lastPageElementsFound', this.lastPageElementsFound);
                     if (this.lastPageElementsFound && dataToSave) {
-                        setter.save(pageUrl, dataToSave, callback);
+                        setter
+                            .save(pageUrl, dataToSave)
+                            .then(callback)
+                            .catch(callback);
                         return;
                     }
 

@@ -8,20 +8,22 @@ class MongoSetter {
         this.config = config;
     }
 
-    save(url, data, callback) {
+    save(url, data) {
         const collection = db.get().collection(this.config.collection);
         const type = this.config.saveType || globalConfig.setters.defaultSaveType;
 
         if (type === 'insert') {
-            collection.insert(data, err => callback(err));
+            return collection.insertOne(data);
         }
 
         if (type === 'update') {
             const query = this.config.getQuery(url);
-            collection.update(query, {
+            return collection.updateOne(query, {
                 $set: data[0],
-            }, err => callback(err));
+            });
         }
+
+        throw new Error('bad_save_type');
     }
 }
 
