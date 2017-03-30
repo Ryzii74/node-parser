@@ -10,7 +10,7 @@ class FileSetter {
     }
 
     save(url, data) {
-        new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             const rowsToAppend = `${data.map(obj => Object.keys(obj).map(key => obj[key]).join(this.config.fieldDelimiter)).join('\r\n')}\r\n`;
             const filePath = config.setters.fileSetterFolder + this.config.file;
 
