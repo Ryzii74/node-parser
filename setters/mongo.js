@@ -13,7 +13,7 @@ class MongoSetter {
         const type = this.config.saveType || globalConfig.setters.defaultSaveType;
 
         if (type === 'insert') {
-            return collection.insertOne(data);
+            return collection.insertMany(data);
         }
 
         if (type === 'update') {

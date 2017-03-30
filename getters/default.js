@@ -41,7 +41,7 @@ class DefaultGetter {
                     if (this.lastPageElementsFound && dataToSave) {
                         setter
                             .save(pageUrl, dataToSave)
-                            .then(callback)
+                            .then(() => callback())
                             .catch(callback);
                         return;
                     }
