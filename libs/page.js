@@ -6,6 +6,13 @@ const cheerioAdv = require('cheerio-advanced-selectors');
 const config = require('../config.js');
 const Iconv = require('iconv').Iconv;
 
+function isElementEmpty(obj = {}) {
+    const data = Object.values(obj)
+            .map(el => el.toString())
+            .join('');
+    return !data.length;
+}
+
 class Page {
     constructor(url, config) {
         this.url = url;
@@ -70,6 +77,7 @@ class Page {
                 }
                 element[field.name] = $el.text();
             });
+            if (isElementEmpty(element)) return;
             elements.push(element);
         });
         let isLastPage = false;
