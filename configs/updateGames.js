@@ -1,8 +1,3 @@
-const $ = require('cheerio');
-const cheerioAdv = require('cheerio-advanced-selectors');
-
-const DOMEN = 'yaroslavl.en.cx';
-
 module.exports = {
     getter: {
         type: 'mongo',
