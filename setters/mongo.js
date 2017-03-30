@@ -17,10 +17,18 @@ class MongoSetter {
         }
 
         if (type === 'update') {
-            const query = this.config.getQuery(url);
-            return collection.updateOne(query, {
-                $set: data[0],
+            const all = [];
+            data.forEach(el => {
+                const query = this.config.getQuery(el) || { url };
+                el.url = url;
+                const promise = collection.updateOne(query, {
+                    $set: el,
+                }, {
+                    upsert: true,
+                });
+                all.push(promise);
             });
+            return Promise.all(all);
         }
 
         throw new Error('bad_save_type');

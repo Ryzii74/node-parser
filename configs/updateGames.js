@@ -24,10 +24,8 @@ module.exports = {
     setter: {
         type: 'mongo',
         saveType: 'update',
-        getQuery(url) {
-            return {
-                url,
-            };
+        getQuery(el) {
+            return false;
         },
         collection: 'games',
     },
