@@ -16,6 +16,6 @@ module.exports = {
     },
     setter: {
         type: 'mongo',
-        file: 'enplayers',
+        collection: 'players'
     },
 };
