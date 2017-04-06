@@ -8,27 +8,24 @@ class MongoSetter {
         this.config = config;
     }
 
-    save(url, data) {
+    async save(url, data) {
         const collection = db.get().collection(this.config.collection);
         const type = this.config.saveType || globalConfig.setters.defaultSaveType;
 
         if (type === 'insert') {
-            return collection.insertMany(data);
+            return await collection.insertMany(data);
         }
 
         if (type === 'update') {
-            const all = [];
-            data.forEach(el => {
+            data.forEach(async el => {
                 const query = this.config.getQuery(el) || { url };
                 el.url = url;
-                const promise = collection.updateOne(query, {
+                await collection.updateOne(query, {
                     $set: el,
                 }, {
                     upsert: true,
                 });
-                all.push(promise);
             });
-            return Promise.all(all);
         }
 
         throw new Error('bad_save_type');
