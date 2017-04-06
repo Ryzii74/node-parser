@@ -19,32 +19,33 @@ class Page {
         this.config = config;
     }
 
-    get(callback) {
-        const requestObject = {
-            url: this.url,
-            followRedirect: false,
-            headers: {
-                cookie: this.config.cookie,
-                'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36',
-            },
-        };
-        if (this.config.encoding) {
-            requestObject.encoding = 'binary';
-        }
-
-        request(requestObject, (error, response, body) => {
+    async get() {
+        return new Promise((resolve, reject) => {
+            const requestObject = {
+                url: this.url,
+                followRedirect: false,
+                headers: {
+                    cookie: this.config.cookie,
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36',
+                },
+            };
             if (this.config.encoding) {
-                body = new Buffer(body, 'binary');
-                body = new Iconv(this.config.encoding, 'utf8').convert(body).toString();
+                requestObject.encoding = 'binary';
             }
 
-            if (error || response.statusCode !== 200) {
-                callback(error, {});
-                return;
-            }
+            request(requestObject, (error, response, body) => {
+                if (this.config.encoding) {
+                    body = new Buffer(body, 'binary');
+                    body = new Iconv(this.config.encoding, 'utf8').convert(body).toString();
+                }
 
-            const data = this.parse(body);
-            callback(null, data.data, data.isLastPage);
+                if (error || response.statusCode !== 200) {
+                    return reject(error);
+                }
+
+                const data = this.parse(body);
+                return resolve(data);
+            });
         });
     }
 
@@ -89,7 +90,7 @@ class Page {
     }
 }
 
-module.exports = (url, config, callback) => {
+module.exports = async (url, config) => {
     const page = new Page(url, config);
-    page.get(callback);
+    return await page.get();
 };

@@ -15,51 +15,25 @@ class DefaultGetter {
 
     async init() {}
 
-    start(setter) {
-        async.doWhilst(
-            (callback) => {
-                const pageUrl = this.getCurrentPage();
-                if (!pageUrl) {
-                    callback('no pageUrls');
-                    return;
-                }
-                log(pageUrl);
+    async start(setter) {
+        while(this.isNotLastPage()) {
+            const pageUrl = this.getCurrentPage();
+            log(pageUrl);
+            if (!pageUrl) throw new Error('no pageUrls');
 
-                Page(pageUrl, this.config.pageStructure, (err, data, isLastPage) => {
-                    if (err || this.isExitOnNoPageData(data)) {
-                        callback(err || 'no data on page');
-                        return;
-                    }
+            const { data, isLastPage } = await Page(pageUrl, this.config.pageStructure);
+            log(data);
+            const dataToSave = data && data.slice(0, this.getRealCountToSave(data.length));
 
-                    log(data);
-                    let dataToSave;
-                    if (data) {
-                        dataToSave = data.slice(0, this.getRealCountToSave(data.length));
-                    }
-
-                    log('lastPageElementsFound', this.lastPageElementsFound);
-                    if (this.lastPageElementsFound && dataToSave) {
-                        setter
-                            .save(pageUrl, dataToSave)
-                            .then(() => callback())
-                            .catch(callback);
-                        return;
-                    }
-
-                    if (this.isExit(isLastPage)) {
-                        callback('last page detected');
-                        return;
-                    }
-                    callback(null);
-                });
-            },
-            () => this.isNotLastPage(),
-            (err) => {
-                console.log('elements parsed:', this.elementsParsed);
-                if (err) console.log(err);
-                process.exit();
+            log('lastPageElementsFound', this.lastPageElementsFound);
+            if (this.lastPageElementsFound && dataToSave) {
+                await setter.save(pageUrl, dataToSave);
             }
-        );
+
+            if (this.isExit(isLastPage)) throw new Error('last page detected');
+        }
+
+        console.log('elements parsed:', this.elementsParsed);
     }
 
     isExit(isLastPage) {

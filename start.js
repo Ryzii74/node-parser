@@ -32,7 +32,9 @@ if (!config.setter || !config.getter) {
         const getter = await require(globalConfig.getters.path + getterType).create(config.getter);
         await getter.init();
         /*eslint-enable */
-        getter.start(setter);
+        await getter.start(setter);
+
+        process.exit(0);
     } catch (err) {
         error(err);
     }
