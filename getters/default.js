@@ -1,6 +1,5 @@
 'use strict';
 
-const async = require('async');
 const Page = require('../libs/page.js');
 const config = require('../config.js');
 const log = require('debug')('urls');
@@ -16,7 +15,7 @@ class DefaultGetter {
     async init() {}
 
     async start(setter) {
-        while(this.isNotLastPage()) {
+        while (this.isNotLastPage()) {
             const pageUrl = this.getCurrentPage();
             log(pageUrl);
             if (!pageUrl) throw new Error('no pageUrls');
