@@ -5,7 +5,7 @@ module.exports = {
         db: 'parser',
     },
     defaultEncoding: 'utf-8',
-    setters: {
+        setters: {
         path: './setters/',
         default: 'mongo',
         fileSetterFolder: './resultFiles/',
