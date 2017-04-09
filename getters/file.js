@@ -6,8 +6,8 @@ const config = require('../config');
 
 class FileGetter extends DefaultGetter {
     init() {
-        const filePath = config.setters.fileGetterFolder + this.config.file;
-        this.list = fs.readFileSync(filePath);
+        const filePath = config.getters.fileGetterFolder + this.config.file;
+        this.list = fs.readFileSync(filePath).toString().split('\n');
     }
 
     getCurrentPage() {
