@@ -3,6 +3,7 @@
 const fs = require('fs');
 const globalConfig = require('./config.js');
 const optimist = require('optimist');
+const db = require('./libs/db');
 
 function error(...args) {
     console.log.apply(null, args);
@@ -27,6 +28,9 @@ if (!config.setter || !config.getter) {
 
     try {
         /*eslint-disable */
+        if (config.setter.type === 'mongo' || config.getter.type === 'mongo') {
+            await db.init();
+        }
         const setter = await require(setterPath).init(config.setter);
         const getterType = config.getter.type || globalConfig.getters.default;
         const getter = await require(globalConfig.getters.path + getterType).create(config.getter);

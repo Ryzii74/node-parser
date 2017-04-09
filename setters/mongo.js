@@ -34,7 +34,6 @@ class MongoSetter {
 
 module.exports = {
     async init(config) {
-        await db.init();
         return new MongoSetter(config);
     },
 };
