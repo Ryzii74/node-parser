@@ -15,5 +15,6 @@ module.exports = {
         path: './getters/',
         default: 'default',
         pageNumberReplacement: '{{pageNumber}}',
+        fileGetterFolder: './initFiles/',
     },
 };
