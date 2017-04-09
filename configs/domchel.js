@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     getter: {
         cookie: 'list_col_pp=300',

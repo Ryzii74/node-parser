@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     getter: {
         pageTemplate: 'http://www.sportmaster.ru/catalog/muzhskaya_obuv/botinki/?page={{pageNumber}}',

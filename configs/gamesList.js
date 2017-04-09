@@ -1,3 +1,5 @@
+'use strict';
+
 const $ = require('cheerio');
 const cheerioAdv = require('cheerio-advanced-selectors');
 

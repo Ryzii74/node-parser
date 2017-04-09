@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     getter: {
         pageTemplate: 'http://chel.en.cx/UserList.aspx?page={{pageNumber}}',

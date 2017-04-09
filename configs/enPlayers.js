@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     getter: {
         type: 'list',
@@ -16,6 +18,6 @@ module.exports = {
     },
     setter: {
         type: 'mongo',
-        collection: 'players'
+        collection: 'players',
     },
 };
