@@ -6,7 +6,11 @@ class ConsoleSetter {
     }
 
     save(url, data) {
-        console.log(url, data);
+        if (this.config.printUrl) {
+            console.log(url, data);
+        } else {
+            console.log(data);
+        }
     }
 }
 

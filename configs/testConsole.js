@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     getter: {
         type: 'mongo',
@@ -21,5 +23,6 @@ module.exports = {
     },
     setter: {
         type: 'console',
+        printUrl: false,
     },
 };
