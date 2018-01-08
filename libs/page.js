@@ -78,6 +78,15 @@ class Page {
                 }
                 element[field.name] = $el.text();
             });
+
+            this.config.fields.forEach((field) => {
+                if (!field.noNewLinesAndTabulates) return;
+                element[field.name] = element[field.name]
+                    .replace(/\t/g, '')
+                    .replace(/\r/g, '')
+                    .replace(/\n/g, '')
+                    .trim();
+            });
             if (isElementEmpty(element)) return;
             elements.push(element);
         });
