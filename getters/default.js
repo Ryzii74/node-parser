@@ -8,7 +8,7 @@ class DefaultGetter {
     constructor(config) {
         this.config = config;
         this.currentPosition = config.startPage || 1;
-        this.lastPageElementsFound = 0;
+        this.lastPageElementsFound = 999;
         this.elementsParsed = 0;
     }
 
