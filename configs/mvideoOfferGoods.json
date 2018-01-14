@@ -1,0 +1,26 @@
+{
+    "getter": {
+        "pageTemplate": "https://www.mvideo.ru/promo/uspeite-kupit-mark28378574/f/category=igrovye-monitory-3587,monitory-1263,igrovye-klaviatury-1114,igrovye-myshi-1113,4k-uhd-televizory-1682,naushniki-igrovye-1115,pylesosy-ruchnye-handstick-3088/page={{pageNumber}}?sort=priceHigh&categoryId=0",
+        "pageStructure": {
+            "element": ".product-tile-info",
+            "fields": [
+                {
+                    "name": "name",
+                    "selector": ".product-tile-title-link",
+                    "method": "text",
+                    "noNewLinesAndTabulates": true
+                },
+                {
+                    "name": "price",
+                    "selector": ".product-price-current",
+                    "method": "text",
+                    "noNewLinesAndTabulates": true
+                }
+            ]
+        }
+    },
+    "setter": {
+        "type": "mongo",
+        "collection": "newOfferGoods"
+    }
+}
